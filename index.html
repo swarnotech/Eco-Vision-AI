@@ -5,174 +5,227 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EcoVision AI | Smart Waste Management</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-
 <body>
 
-<header class="topbar">
-    <div class="brand">♻ EcoVision <span>AI</span></div>
-    <div class="top-label">SMART WASTE TECHNOLOGY</div>
+<header class="navbar">
+    <a href="/" class="logo">
+        <span class="logo-icon">♻</span>
+        <span>EcoVision<span class="logo-ai"> AI</span></span>
+    </a>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#classify">Classify Waste</a>
+        <a href="#categories">Categories</a>
+        <a href="#about">About</a>
+    </nav>
+    <a href="#classify" class="nav-button">Try AI Scanner ↗</a>
 </header>
 
-<main class="dashboard">
-
-    <section class="hero">
-        <div class="hero-tag">🌱 AI POWERED RECYCLING</div>
-        <h1>Make Waste <span>Worth More.</span></h1>
-        <p>
-            Smart waste identification through artificial intelligence.
-            Upload an image and discover its waste category instantly.
+<main>
+<section class="hero" id="home">
+    <div class="hero-content">
+        <div class="eyebrow"><span class="status-dot"></span> AI-POWERED WASTE MANAGEMENT</div>
+        <h1>A Cleaner Planet<br>Starts With <span>One Scan.</span></h1>
+        <p class="hero-description">
+            Make waste sorting smarter. Upload an image and let our AI
+            identify the waste category to help you recycle responsibly.
         </p>
-    </section>
+        <div class="hero-actions">
+            <a href="#classify" class="primary-button">Start Classifying <span>→</span></a>
+            <a href="#about" class="secondary-button">Discover More</a>
+        </div>
+        <div class="hero-note">
+            <span>✳</span> Smart technology for a sustainable tomorrow
+        </div>
+    </div>
 
-    <section class="main-grid">
+    <div class="hero-visual">
+        <div class="visual-circle circle-one"></div>
+        <div class="visual-circle circle-two"></div>
+        <div class="eco-illustration">
+            <div class="illustration-leaf leaf-one">🌿</div>
+            <div class="illustration-leaf leaf-two">🍃</div>
+            <div class="recycle-symbol">♻</div>
+            <div class="illustration-caption">
+                <span>THINK GREEN</span>
+                <strong>Live Clean.</strong>
+            </div>
+        </div>
+        <div class="floating-card">
+            <span class="floating-icon">🌎</span>
+            <div><strong>Smarter Sorting</strong><small>Better for our planet</small></div>
+            <span class="floating-check">✓</span>
+        </div>
+    </div>
+</section>
 
-        <div class="panel upload-panel">
-            <div class="section-label">01 / IMAGE INPUT</div>
-            <h2>Analyze Your Waste</h2>
-            <p class="muted">Choose a JPG or PNG image to begin.</p>
+<section class="stats-strip">
+    <div><strong>6</strong><span>Waste Categories</span></div>
+    <div><strong>AI</strong><span>Image Recognition</span></div>
+    <div><strong>87.52%</strong><span>Validation Accuracy</span></div>
+    <div><strong>24/7</strong><span>Accessible Online</span></div>
+</section>
 
-            <form method="POST" enctype="multipart/form-data">
-                <div class="upload-area">
-                    <div class="upload-icon">📸</div>
-                    <h3>Upload Waste Image</h3>
-                    <p>Choose an image from your device</p>
-                    <input type="file" name="image"
-                           accept=".jpg,.jpeg,.png" required>
-                </div>
+<section class="scanner-section" id="classify">
+    <div class="section-heading">
+        <div class="eyebrow">INTELLIGENT WASTE DETECTION</div>
+        <h2>Let's Identify Your <span>Waste.</span></h2>
+        <p>Upload a clear image of an item and our AI model will predict its category.</p>
+    </div>
 
-                <button type="submit" class="classify-btn">
-                    ✨ Classify Waste
-                </button>
-            </form>
-
-            {% if message %}
-                <p class="success-message">{{ message }}</p>
-            {% endif %}
+    <div class="scanner-card">
+        <div class="scanner-top">
+            <div>
+                <span class="scanner-label">AI WASTE SCANNER</span>
+                <h3>Upload Your Image</h3>
+                <p>Supported formats: JPG, JPEG and PNG</p>
+            </div>
+            <div class="scanner-icon">📷</div>
         </div>
 
-        <div class="panel result-panel">
-            <div class="section-label">02 / ANALYSIS RESULT</div>
-            <h2>AI Detection</h2>
+        <form action="/" method="POST" enctype="multipart/form-data" id="uploadForm">
+            <label class="upload-zone" for="fileInput" id="uploadZone">
+                <div class="upload-icon">↑</div>
+                <strong id="uploadText">Drop your image here</strong>
+                <span id="uploadSubtext">or click to browse files</span>
+                <span class="browse-button">Choose Image</span>
+                <input type="file" name="file" id="fileInput" accept=".jpg,.jpeg,.png" required>
+            </label>
+            <button type="submit" class="scan-button">Analyze with AI <span>→</span></button>
+        </form>
 
-            {% if image_url %}
-                <img class="preview-image"
-                     src="{{ image_url }}" alt="Uploaded waste image">
-            {% else %}
-                <div class="empty-preview">
-                    <div>🌿</div>
-                    <p>Your uploaded image will appear here.</p>
-                </div>
-            {% endif %}
+        {% if message %}
+        <div class="message-box">{{ message }}</div>
+        {% endif %}
 
+        {% if image_url %}
+        <div class="result-section">
+            <div class="result-image">
+                <img src="{{ image_url }}" alt="Uploaded waste image">
+            </div>
             {% if prediction %}
-                <div class="prediction-box">
-                    <span class="muted">IDENTIFIED CATEGORY</span>
-                    <h3>{{ prediction|capitalize }}</h3>
-                    <p>{{ "%.2f"|format(confidence) }}% confidence</p>
-                </div>
-            {% else %}
-                <div class="empty-result">
-                    <span>AI RESULT</span>
-                    <p>Waiting for image analysis...</p>
-                </div>
+            <div class="prediction-card">
+                <span class="result-label">AI PREDICTION</span>
+                <h3>{{ prediction }}</h3>
+                <p>Confidence: <strong>{{ confidence }}%</strong></p>
+            </div>
             {% endif %}
         </div>
-
-    </section>
-
-    <section class="panel scores-panel">
-        <div class="section-label">03 / AI PROBABILITY ANALYSIS</div>
-        <h2>All Six Prediction Scores</h2>
-        <p class="muted">
-            Compare the model's scores for every waste category.
-        </p>
+        {% endif %}
 
         {% if class_scores %}
-            <div class="score-grid">
+        <div class="scores-section">
+            <h4>Category Confidence Scores</h4>
+            <div class="scores-grid">
                 {% for item in class_scores %}
-                    <div class="score-card">
-                        <div class="score-heading">
-                            <span>{{ item.name }}</span>
-                            <strong>{{ "%.2f"|format(item.score) }}%</strong>
-                        </div>
-                        <div class="progress-track">
-                            <div class="progress-fill"
-                                 style="width: {{ item.score }}%">
-                            </div>
-                        </div>
+                <div class="score-item">
+                    <div class="score-info">
+                        <span>{{ item.name }}</span>
+                        <strong>{{ item.score }}%</strong>
                     </div>
+                    <div class="score-track">
+                        <div class="score-fill" style="width: {{ item.score }}%"></div>
+                    </div>
+                </div>
                 {% endfor %}
             </div>
-        {% else %}
-            <div class="empty-result">
-                Upload an image to see all six scores together.
-            </div>
-        {% endif %}
-    </section>
-
-    <section class="categories-section">
-        <div class="section-label">04 / WASTE CATEGORIES</div>
-        <h2>Explore Waste Types</h2>
-
-        <div class="category-grid">
-            <div class="category-card">
-                <span>📦</span>
-                <h3>Cardboard</h3>
-                <p>Boxes and packaging materials.</p>
-            </div>
-
-            <div class="category-card">
-                <span>🍾</span>
-                <h3>Glass</h3>
-                <p>Bottles and glass containers.</p>
-            </div>
-
-            <div class="category-card">
-                <span>🥫</span>
-                <h3>Metal</h3>
-                <p>Cans and metal packaging.</p>
-            </div>
-
-            <div class="category-card">
-                <span>📄</span>
-                <h3>Paper</h3>
-                <p>Sheets, newspapers and paper waste.</p>
-            </div>
-
-            <div class="category-card">
-                <span>🧴</span>
-                <h3>Plastic</h3>
-                <p>Bottles and plastic containers.</p>
-            </div>
-
-            <div class="category-card">
-                <span>🗑️</span>
-                <h3>Trash</h3>
-                <p>Other general non-recyclable waste.</p>
-            </div>
         </div>
-    </section>
+        {% endif %}
+    </div>
+</section>
 
-    <section class="about-panel">
-        <div class="section-label">05 / ABOUT THE PROJECT</div>
-        <h2>Building a Cleaner Tomorrow</h2>
+<section class="categories-section" id="categories">
+    <div class="section-heading">
+        <div class="eyebrow">KNOW YOUR WASTE</div>
+        <h2>Six Categories. <span>One Greener Future.</span></h2>
+        <p>Our AI model recognizes these six common types of waste.</p>
+    </div>
+
+    <div class="category-grid">
+        <div class="category-card">
+            <div class="category-icon cardboard">📦</div>
+            <h3>Cardboard</h3>
+            <p>Boxes and packaging materials</p>
+        </div>
+        <div class="category-card">
+            <div class="category-icon glass">🍾</div>
+            <h3>Glass</h3>
+            <p>Bottles and glass containers</p>
+        </div>
+        <div class="category-card">
+            <div class="category-icon metal">🥫</div>
+            <h3>Metal</h3>
+            <p>Cans and metal objects</p>
+        </div>
+        <div class="category-card">
+            <div class="category-icon paper">📄</div>
+            <h3>Paper</h3>
+            <p>Sheets and paper products</p>
+        </div>
+        <div class="category-card">
+            <div class="category-icon plastic">🧴</div>
+            <h3>Plastic</h3>
+            <p>Bottles and plastic packaging</p>
+        </div>
+        <div class="category-card">
+            <div class="category-icon trash">🗑️</div>
+            <h3>Trash</h3>
+            <p>Other non-recyclable waste</p>
+        </div>
+    </div>
+</section>
+
+<section class="about-section" id="about">
+    <div class="about-icon">🌱</div>
+    <div>
+        <div class="eyebrow">OUR PURPOSE</div>
+        <h2>Technology Meets <span>Sustainability.</span></h2>
         <p>
-            EcoVision AI is a smart waste classification project
-            that uses machine learning and image recognition to
-            identify six categories of waste. It aims to support
-            better waste segregation and encourage responsible
-            recycling practices.
+            EcoVision AI is a smart waste classification project that uses
+            machine learning and image recognition to identify waste.
+            By making waste identification easier, we aim to encourage
+            responsible disposal and a cleaner environment.
         </p>
-    </section>
-
+    </div>
+</section>
 </main>
 
-<footer>
-    <p>♻ EcoVision AI | Smart Waste Management System</p>
-    <p>Technology for a Greener Tomorrow 🌍</p>
+<footer class="footer">
+    <a href="/" class="logo"><span class="logo-icon">♻</span> EcoVision<span class="logo-ai"> AI</span></a>
+    <p>Building a smarter, greener tomorrow. 🌿</p>
+    <span>© 2026 EcoVision AI. Academic Project.</span>
 </footer>
+
+<script>
+const fileInput = document.getElementById("fileInput");
+const uploadText = document.getElementById("uploadText");
+const uploadSubtext = document.getElementById("uploadSubtext");
+const uploadZone = document.getElementById("uploadZone");
+
+fileInput.addEventListener("change", function() {
+    if (this.files.length > 0) {
+        uploadText.textContent = this.files[0].name;
+        uploadSubtext.textContent = "Image selected successfully";
+        uploadZone.classList.add("selected");
+    }
+});
+
+uploadZone.addEventListener("dragover", function(event) {
+    event.preventDefault();
+    uploadZone.classList.add("selected");
+});
+
+uploadZone.addEventListener("drop", function(event) {
+    event.preventDefault();
+    if (event.dataTransfer.files.length > 0) {
+        fileInput.files = event.dataTransfer.files;
+        fileInput.dispatchEvent(new Event("change"));
+    }
+});
+</script>
 
 </body>
 </html>
